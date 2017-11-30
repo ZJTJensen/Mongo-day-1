@@ -1,0 +1,95 @@
+> show dbs
+admin     0.000GB
+local     0.000GB
+> show dbs
+admin     0.000GB
+local     0.000GB
+test_app  0.000GB
+> use my_first_db
+switched to db my_first_db
+> db
+my_first_db
+> db.createCollection('students')
+{ "ok" : 1 }
+> db.students.insert ({name: John, home_state: MD, lucky_number: 21, birthday: {month: 12, day: 21, year: 2017}})
+2017-11-30T10:47:50.695-0500 E QUERY    [thread1] ReferenceError: John is not defined :
+@(shell):1:22
+> db.students.insert ({name: 'John', home_state:'MD', lucky_number: 21, birthday: {month: 12, day: 21, year: 2017}})
+WriteResult({ "nInserted" : 1 })
+> db.students.insert ({name: 'Sarah', home_state:'DC', lucky_number: 12, birthday: {month: 12, day: 21, year: 2017}})
+WriteResult({ "nInserted" : 1 })
+> db.students.insert ({name: 'Mark', home_state:'VA', lucky_number: 2, birthday: {month: 12, day: 21, year: 2017}})
+WriteResult({ "nInserted" : 1 })
+> db.students.insert ({name: 'Andrew', home_state:'SA', lucky_number: 1, birthday: {month: 12, day: 21, year: 2017}})
+WriteResult({ "nInserted" : 1 })
+> db.students.insert ({name: 'Kevin', home_state:'WA', lucky_number: 11, birthday: {month: 12, day: 21, year: 2000}})
+WriteResult({ "nInserted" : 1 })
+> db.students.find()
+{ "_id" : ObjectId("5a2028398e60a24f63853e35"), "name" : "John", "home_state" : "MD", "lucky_number" : 21, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028498e60a24f63853e36"), "name" : "Sarah", "home_state" : "DC", "lucky_number" : 12, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028568e60a24f63853e37"), "name" : "Mark", "home_state" : "VA", "lucky_number" : 2, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028618e60a24f63853e38"), "name" : "Andrew", "home_state" : "SA", "lucky_number" : 1, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028828e60a24f63853e39"), "name" : "Kevin", "home_state" : "WA", "lucky_number" : 11, "birthday" : { "month" : 12, "day" : 21, "year" : 2000 } }
+> db.students.find({home_state:"WA"})
+{ "_id" : ObjectId("5a2028828e60a24f63853e39"), "name" : "Kevin", "home_state" : "WA", "lucky_number" : 11, "birthday" : { "month" : 12, "day" : 21, "year" : 2000 } }
+> db.students.find({lucky_num: {$gt:3}})
+> db.students.find({lucky_num: {$gt:(3)}})
+> db.students.find({lucky_num: {$gt(3)}})
+2017-11-30T10:55:21.330-0500 E QUERY    [thread1] SyntaxError: missing formal parameter @(shell):1:34
+> db.students.find({lucky_num: $gt(3)})
+2017-11-30T10:55:31.534-0500 E QUERY    [thread1] ReferenceError: $gt is not defined :
+@(shell):1:19
+> db.students.find({lucky_num: {$gt:3}})
+> db.students.find({lucky_number: {$gt:3}})
+{ "_id" : ObjectId("5a2028398e60a24f63853e35"), "name" : "John", "home_state" : "MD", "lucky_number" : 21, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028498e60a24f63853e36"), "name" : "Sarah", "home_state" : "DC", "lucky_number" : 12, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028828e60a24f63853e39"), "name" : "Kevin", "home_state" : "WA", "lucky_number" : 11, "birthday" : { "month" : 12, "day" : 21, "year" : 2000 } }
+> db.students.find({lucky_number: {$lte:0}})
+> db.students.find({lucky_number: {$gt:0}{$lt:10}})
+2017-11-30T10:56:53.398-0500 E QUERY    [thread1] SyntaxError: missing } after property list @(shell):1:39
+> db.students.find({lucky_number: {$gt:0},{$lt:10}})
+2017-11-30T10:56:58.262-0500 E QUERY    [thread1] SyntaxError: invalid property id @(shell):1:40
+> db.students.find({lucky_number: {$gt:0,$lt:10}})
+{ "_id" : ObjectId("5a2028568e60a24f63853e37"), "name" : "Mark", "home_state" : "VA", "lucky_number" : 2, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028618e60a24f63853e38"), "name" : "Andrew", "home_state" : "SA", "lucky_number" : 1, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+> db.students.update({}, {$set{intrests: ['coding', 'brunch', 'mongoDB']}})
+2017-11-30T10:59:33.120-0500 E QUERY    [thread1] SyntaxError: missing : after property id @(shell):1:28
+> db.students.update({}, {$set:{intrests: ['coding', 'brunch', 'mongoDB']}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.students.find()
+{ "_id" : ObjectId("5a2028398e60a24f63853e35"), "name" : "John", "home_state" : "MD", "lucky_number" : 21, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 }, "intrests" : [ "coding", "brunch", "mongoDB" ] }
+{ "_id" : ObjectId("5a2028498e60a24f63853e36"), "name" : "Sarah", "home_state" : "DC", "lucky_number" : 12, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028568e60a24f63853e37"), "name" : "Mark", "home_state" : "VA", "lucky_number" : 2, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028618e60a24f63853e38"), "name" : "Andrew", "home_state" : "SA", "lucky_number" : 1, "birthday" : { "month" : 12, "day" : 21, "year" : 2017 } }
+{ "_id" : ObjectId("5a2028828e60a24f63853e39"), "name" : "Kevin", "home_state" : "WA", "lucky_number" : 11, "birthday" : { "month" : 12, "day" : 21, "year" : 2000 } }
+> db.students.updateMany({}, {$set:{intrests: ['coding', 'brunch', 'mongoDB']}})
+{ "acknowledged" : true, "matchedCount" : 5, "modifiedCount" : 4 }
+
+
+remove all students from WA
+db.students.deleteMany({home_state: "WA"})
+remove students by name
+db.students.remove({name: "Mark"})
+
+Remove a student whos lucky number is greater than 5
+db.students.remove({lucky_number: {%gt: 5}})
+
+add a field called number of belts
+db.students.updateMany({}, {$set:{belts: 0}})
+
+db.students.updateMany({home_state: "WA"}, {$set:{belts: 1}})
+
+db.students.updateMany({belts: 0}. {$set:{'belts' = 'belts_earned'}})
+
+db.students.deleteMany({lucky_number})
+
+db.students.updateMany({}, {$set:{updated_on: {month: 11, day: 29, year: 2017}}})
+
+
+
+
+
+
+
+
+
