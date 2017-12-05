@@ -10,12 +10,14 @@ const PORT = 5000;
 
 
 app.set('views', path.resolve(__dirname,'./client/views'));
+app.use(express.static(__dirname + "/client/static"));
 app.set('view engine', 'ejs');
 app.use(bp.urlencoded({extended: true}));
 app.use(session({secret: "Zachisaboss"}));
 
 
 
+    
 
 require('./server/config/mongoose.js')
 
