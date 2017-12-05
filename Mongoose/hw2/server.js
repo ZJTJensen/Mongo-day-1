@@ -71,12 +71,12 @@ app.post('/View',(req, res) => {
 
 
 app.get('/Edit', (req, res) =>{
-    // Animal.find({}, (err,animals) =>{
-    //     if(err){
-    //         return res.redirect('/');
-    //     }
-    //     return res.render('info', {animals});
-    // });
+    Animal.find({}, (err,animals) =>{
+        if(err){
+            return res.redirect('/');
+        }
+        return res.render('info', {animals});
+    });
 });
 
 app.post('/Edit',(req, res) => {

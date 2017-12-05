@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Message Board</h1>
+    <p>Name:</p>
+    <form action="/message" method = "POST">
+        <input type="text" name="name">
+        <br>
+        <p>Message:</p>
+        <textarea name="message" id="" cols="30" rows="10"></textarea>
+        <br>
+        <input type="submit" value ="Post Message">
+    </form>
+    <% for(message of messages){ %>
+        <form action="/comment/<%=messages.id %>" method ="POST">
+        <h3>Name: <%=message.name%></h3>
+        <h3>Message: <%=message.message%></h3>
+            <% if (message.comments.length != 0) { %>
+        <% for(comment of message.comments) { %>
+            <p>Name: <%=comment.name %></p>
+            <p>Comment: <%=comment.comment%></p>
+        <% } %>
+        <% } %>
+        
+            <input type="text" name="name">
+            <br>
+            <textarea name="comment" cols="30" rows="10"></textarea>
+            <input type="submit" value="Post Comment">
+        </form>
+        <hr>
+    <% } %>
+
+</body>
+</html>
